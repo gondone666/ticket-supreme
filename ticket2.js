@@ -1,59 +1,3 @@
-const { promises: fs } = require('fs');
-const { performance } = require('perf_hooks');
-const crypto = require('crypto');
-const request = require('request-promise');
-
-process=undefined;
-
-var navigator = {
-	get userAgent() {
-		return 'Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Mobile/15E148 Safari/604.1';
-	}
-};
-
-var window = {
-	get navigator() {
-		return navigator;
-	},
-	get document() {
-		return document;
-	},
-
-	get crypto() {
-		return {
-			getRandomValues: crypto.randomFillSync
-		};
-	}
-}
-
-var supjar = request.jar();
-supjar._jar.setCookie('lastVisitedFragment=', 'https://www.supremenewyork.com/', (error, cookie) => {
-		
-});
-
-var document = {
-	 get cookie() {
-		if (supjar!=undefined)
-		{
-			let c = supjar._jar.getCookieStringSync('https://www.supremenewyork.com');
-			console.log('getcookie', c);
-			return c;
-		}	else return 'lastVisitedFragment=';
-	},
-
-	set cookie(value) {
-		if (supjar!=undefined)
-		{
-			supjar._jar.setCookie(value, 'https://www.supremenewyork.com', (error, cookie) => {
-				if (error) {
-					throw error;
-				}
-			});
-			console.log('setcookie',value);
-		}	
-	}
-};
-
 var $jscomp = $jscomp || {};
 $jscomp.scope = {};
 $jscomp.arrayIteratorImpl = function(a) {
@@ -92,7 +36,6 @@ $jscomp.SIMPLE_FROUND_POLYFILL = !1;
 $jscomp.defineProperty = $jscomp.ASSUME_ES5 || "function" == typeof Object.defineProperties ? Object.defineProperty : function(a, b, e) {
 	a != Array.prototype && a != Object.prototype && (a[b] = e.value)
 };
-
 $jscomp.polyfill = function(a, b, e, g) {
 	if (b) {
 		e = $jscomp.global;
@@ -611,7 +554,6 @@ $jscomp.ES6_CONFORMANCE = $jscomp.USE_PROXY_FOR_ES6_CONFORMANCE_CHECKS && $jscom
 $jscomp.owns = function(a, b) {
 	return Object.prototype.hasOwnProperty.call(a, b)
 };
-
 $jscomp.polyfill("WeakMap", function(a) {
 	function b() {
 		if (!a || !Object.seal) return !1;
@@ -690,7 +632,6 @@ $jscomp.polyfill("WeakMap", function(a) {
 	return d
 }, "es6", "es3");
 $jscomp.MapEntry = function() {};
-
 $jscomp.polyfill("Map", function(a) {
 	function b() {
 		if ($jscomp.ASSUME_NO_NATIVE_MAP || !a || "function" != typeof a || !a.prototype.entries || "function" != typeof Object.seal) return !1;
@@ -866,7 +807,6 @@ $jscomp.objectCreate = $jscomp.ASSUME_ES5 || "function" == typeof Object.create 
 	b.prototype = a;
 	return new b
 };
-
 $jscomp.construct = function() {
 	function a() {
 		function a() {}
@@ -889,22 +829,15 @@ $jscomp.construct = function() {
 		return Function.prototype.apply.call(a, f, b) || f
 	}
 }();
-
 $jscomp.polyfill("Reflect.construct", function(a) {
 	return $jscomp.construct
 }, "es6", "es3");
-
 try {
-	
 	(function() {
 		if ("undefined" !== typeof window) window.global = window;
 		else if ("undefined" !== typeof self) self.global = self;
 		else throw Error("cannot export Go (neither window nor self is defined)");
 		var a = "";
-		global.window=window;
-		global.document=document;
-		global.navigator=navigator;
-		
 		global.fs = {
 			constants: {
 				O_WRONLY: -1,
@@ -936,15 +869,11 @@ try {
 		var b = new TextEncoder("utf-8"),
 			e = new TextDecoder("utf-8"),
 			g = [];
-			
 		global.Go = function() {
 			var a = this;
-
 			this._callbackTimeouts = new Map;
 			this._nextCallbackTimeoutID = 1;
-
 			var c = function() {
-					
 					return new DataView(a._inst.exports.memory.buffer)
 				},
 				f = function(b) {
@@ -1002,7 +931,6 @@ try {
 				l = function(b, c) {
 					return e.decode(new DataView(a._inst.exports.memory.buffer, b, c))
 				},
-				
 				t = Date.now() - performance.now();
 			this.importObject = {
 				wasi_unstable: {
@@ -1023,12 +951,9 @@ try {
 				},
 				env: {
 					"runtime.ticks": function() {
-						let tick=t + performance.now();
-						console.log('ticks',tick);
-						return tick;
+						return t + performance.now()
 					},
 					"runtime.sleepTicks": function(b) {
-						console.log('sleepTicks',b);
 						setTimeout(a._inst.exports.go_scheduler, b)
 					},
 					"syscall/js.stringVal": function(a, b, c) {
@@ -1037,7 +962,7 @@ try {
 						d(a, b)
 					},
 					"syscall/js.valueGet": function(a, b, c, e) {
-						console.log('valueget',arguments);
+						console.log('valueget', arguments);
 						c = l(c, e);
 						b = f(b);
 						b = Reflect.get(b, c);
@@ -1065,6 +990,7 @@ try {
 						e = l(e, g);
 						h = m(h, n, v);
 						try {
+							
 							var k = Reflect.get(b, e);
 							d(a, Reflect.apply(k, b, h));
 							c().setUint8(a + 8, 1)
@@ -1095,9 +1021,11 @@ try {
 						}
 					},
 					"syscall/js.valueLength": function(a) {
+						console.log('valueLength',arguments);
 						return f(a).length
 					},
 					"syscall/js.valuePrepareString": function(a, e) {
+						console.log('valuePrepareString',arguments);
 						e = String(f(e));
 						e = b.encode(e);
 						d(a, e);
@@ -1107,6 +1035,7 @@ try {
 						c().setUint32(a + 4, Math.floor(e / 4294967296), !0)
 					},
 					"syscall/js.valueLoadString": function(b, c, d, e) {
+						console.log('valueLoadString',arguments);
 						b = f(b);
 						(new Uint8Array(a._inst.exports.memory.buffer,
 							c, d)).set(b)
@@ -1151,13 +1080,12 @@ try {
 		WebAssembly.instantiateStreaming || (WebAssembly.instantiateStreaming = function(a, b) {
 			var c;
 			return $jscomp.asyncExecutePromiseGeneratorProgram(function(d) {
+				console.log(d);
 				switch (d.nextAddress) {
 					case 1:
-						return d.yield(a,
-							3);
+						return d.yield(a,3);
 					case 3:
-						return d.yield(d.yieldResult.buffer, 2);
-					break;
+						return d.yield(d.yieldResult.arrayBuffer(), 2);
 					case 2:
 						return c = d.yieldResult, d.yield(WebAssembly.instantiate(c, b), 4);
 					case 4:
@@ -1165,11 +1093,9 @@ try {
 				}
 			})
 		});
-		
 		window.__wasmExecute = function() {};
-
 		var f = new Go;
-		WebAssembly.instantiateStreaming(fs.readFile('./f.031a537.wasm'), f.importObject).then(function(a) {
+		WebAssembly.instantiateStreaming(fetch(window.wasmbinsrc), f.importObject).then(function(a) {
 			wasm = a.instance;
 			f.run(wasm)
 		}).catch(function(a) {
