@@ -52,7 +52,7 @@ var global = {
 	document,
 	navigator,
 	fs: {
-		constants: { O_WRONLY: -1, O_RDWR: -1, O_CREAT: -1, O_TRUNC: -1, O_APPEND: -1, O_EXCL: -1 }, // unused
+		constants: { O_WRONLY: -1, O_RDWR: -1, O_CREAT: -1, O_TRUNC: -1, O_APPEND: -1, O_EXCL: -1 },
 		writeSync(fd, buf) {
 			outputBuf += decoder.decode(buf);
 			const nl = outputBuf.lastIndexOf("\n");
@@ -73,7 +73,6 @@ var global = {
 		open(path, flags, mode, callback) { callback(enosys()); },
 		fsync(fd, callback) { callback(null); },
 	}
-	
 }
 
 const enosys = () => {
@@ -270,7 +269,7 @@ class Go  {
 
 	async run(instance) {
 		this._inst = instance;
-		this._values = [NaN, 0, null, true, false, global, this];
+		this._values = [NaN, 0, null, true, false, global];
 		this._refs = new Map();
 		this._callbackShutdown = false;
 		this.exited = false;
