@@ -270,8 +270,7 @@ class Go  {
 
 	async run(instance) {
 		this._inst = instance;
-		this.mem = new DataView(this._inst.exports.memory.buffer);
-		this._values = [NaN, 0, null, true, false, global, this ];
+		this._values = [NaN, 0, null, true, false, global, this];
 		this._refs = new Map();
 		this._callbackShutdown = false;
 		this.exited = false;
