@@ -33,26 +33,17 @@ var document = {
 };
 
 var navigator = {
-	get userAgent() {
-		return 'Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Mobile/15E148 Safari/604.1';
-	}
+	 userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Mobile/15E148 Safari/604.1'
 };
 
 var window = {
-	get navigator() {
-		return navigator;
+	crypto: {
+		getRandomValues: crypto.randomFillSync
 	},
-	get document() {
-		return document;
-	},
-	get crypto() {
-		return {
-			getRandomValues: crypto.randomFillSync
-		};
-	}
+	__wasmExecute () {
+	}	
 }
-	window.__wasmExecute=function () {
-	}
+
 var outputBuf = "";
 
 var global = {
@@ -60,9 +51,6 @@ var global = {
 	window,
 	document,
 	navigator,
-	crypto: {
-		getRandomValues: crypto.randomFillSync
-	},
 	fs: {
 		constants: { O_WRONLY: -1, O_RDWR: -1, O_CREAT: -1, O_TRUNC: -1, O_APPEND: -1, O_EXCL: -1 }, // unused
 		writeSync(fd, buf) {
