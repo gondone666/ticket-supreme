@@ -2,8 +2,7 @@ const { performance } = require('perf_hooks');
 const request = require('request-promise');
 const { promises: fs } = require('fs');
 const crypto = require("crypto");
-
-process=undefined;
+const SocksProxyAgent = require('socks-proxy-agent');
 
 var supjar = request.jar();
 supjar._jar.setCookie('lastVisitedFragment=', 'https://www.supremenewyork.com/', (error, cookie) => {
@@ -191,8 +190,8 @@ class Go  {
 					console.log('valueget', arguments);
 					c = l(c, e);
 					b = f(b);
+					c=='process'&&(c='fakeprocess'); //faked process object
 					b = Reflect.get(b, c);
-					console.log(a,b);
 					d(a, b)
 				},
 				"syscall/js.valueSet": function(a, b, c, d) {
@@ -317,4 +316,52 @@ class Go  {
 	const module = await WebAssembly.compile(await fs.readFile('./f.031a537.wasm'));	
 	const instance = await WebAssembly.instantiate(module, go.importObject);
 	go.run(instance);
+
+	const info = {
+		host: '127.0.0.1',
+		port: 8888,
+	};
+
+	var agent = new SocksProxyAgent(info);
+	
+	var supreme = request.defaults({
+		agent: agent,
+		jar : supjar, 
+		gzip: true,
+		headers: {
+			'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+			'Origin': 'https://www.supremenewyork.com',
+			'Referer': 'https://www.supremenewyork.com/mobile/',
+			'Sec-Fetch-Dest': 'empty',
+			'Sec-Fetch-Mode': 'cors',
+			'Sec-Fetch-Site': 'same-origin',
+			'User-Agent': 'Mozilla/5.0 (Linux; Android 9; ZTE Blade A5 2019RU) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.162 Mobile Safari/537.36',
+			'X-Requested-With': 'XMLHttpRequest'
+		}		
+	})
+	const copitem = { //hanes M
+		id: 304903,
+		sizeid: 63127,
+		styleid: 28535
+	}
+	
+	await supjar._jar.setCookie(`lastVisitedFragment=products/${copitem.id}/${copitem.styleid}`, 'https://www.supremenewyork.com/', (error, cookie) => {
+	});
+	
+	await supreme( 
+		{
+			method: 'POST',
+			url: `https://www.supremenewyork.com/shop/${copitem.id}/add.json`,
+			json: true,
+			form: { // !!!!!!EU ATC FORM!!!!!!!
+				size: copitem.sizeid,
+				style: copitem.styleid,
+				'qty': 1
+			}
+		}, (err, res, body) => {
+			if (err) { console.log(err); }
+			console.log(body);
+			process.exit(0);
+	});
+	
 })();
