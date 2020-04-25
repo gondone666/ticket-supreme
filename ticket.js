@@ -335,7 +335,7 @@ class Go  {
 			'Sec-Fetch-Dest': 'empty',
 			'Sec-Fetch-Mode': 'cors',
 			'Sec-Fetch-Site': 'same-origin',
-			'User-Agent': navigator.userAgent
+			'User-Agent': navigator.userAgent,
 			'X-Requested-With': 'XMLHttpRequest'
 		}		
 	})
