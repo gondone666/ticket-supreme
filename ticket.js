@@ -33,7 +33,7 @@ var document = {
 };
 
 var navigator = {
-	 userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Mobile/15E148 Safari/604.1'
+	 userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Mobile/15E148 Safari/604.1'
 };
 
 var window = {
@@ -271,17 +271,9 @@ class Go  {
 	async run(instance) {
 		this._inst = instance;
 		this.mem = new DataView(this._inst.exports.memory.buffer);
-		this._values = [ 
-			NaN,
-			0,
-			null,
-			true,
-			false,
-			global,
-			this,
-		];
-		this._goRefCounts = []; 
+		this._values = [NaN, 0, null, true, false, global, this ];
 		this._refs = new Map();
+		this._callbackShutdown = false;
 		this.exited = false;
 
 		while (true) {
@@ -323,8 +315,8 @@ class Go  {
 }
 
 (async () => {	
-		const go = new Go();
-		const module = await WebAssembly.compile(await fs.readFile('./f.031a537.wasm'));	
-		const instance = await WebAssembly.instantiate(module, go.importObject);
-		go.run(instance);
+	const go = new Go();
+	const module = await WebAssembly.compile(await fs.readFile('./f.031a537.wasm'));	
+	const instance = await WebAssembly.instantiate(module, go.importObject);
+	go.run(instance);
 })();
