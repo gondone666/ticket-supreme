@@ -335,7 +335,7 @@ class Go  {
 			'Sec-Fetch-Dest': 'empty',
 			'Sec-Fetch-Mode': 'cors',
 			'Sec-Fetch-Site': 'same-origin',
-			'User-Agent': 'Mozilla/5.0 (Linux; Android 9; ZTE Blade A5 2019RU) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.162 Mobile Safari/537.36',
+			'User-Agent': navigator.userAgent
 			'X-Requested-With': 'XMLHttpRequest'
 		}		
 	})
